@@ -163,6 +163,7 @@ return [
         // GymManager\Providers\BroadcastServiceProvider::class,
         GymManager\Providers\EventServiceProvider::class,
         GymManager\Providers\RouteServiceProvider::class,
+        GymManager\Providers\ComposerServiceProvider::class,
 
     ],
 
