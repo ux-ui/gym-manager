@@ -152,6 +152,7 @@ return [
          */
         Barryvdh\LaravelIdeHelper\IdeHelperServiceProvider::class,
         Barryvdh\Debugbar\ServiceProvider::class,
+        anlutro\LaravelSettings\ServiceProvider::class,
 
         /*
          * Application Service Providers...
@@ -215,6 +216,7 @@ return [
          * Package Class Aliases...
          */
         'Debugbar' => Barryvdh\Debugbar\Facade::class,
+        'Setting' => anlutro\LaravelSettings\Facade::class,
 
     ],
 
