@@ -67,7 +67,7 @@ return [
     'providers' => [
         'users' => [
             'driver' => 'eloquent',
-            'model' => GymManager\User::class,
+            'model' => GymManager\Models\User::class,
         ],
 
         // 'users' => [
