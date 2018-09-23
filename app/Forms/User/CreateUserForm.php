@@ -1,29 +1,26 @@
 <?php
 
-namespace GymManager\Forms;
+namespace GymManager\Forms\User;
 
 use Kris\LaravelFormBuilder\Form;
 
-class EditUserForm extends Form
+class CreateUserForm extends Form
 {
     public function buildForm()
     {
-        $this->add('username', 'static', [
+        $this->add('username', 'text', [
             'label' => '아이디',
-            'tag' => 'div',
-            'attr' => ['class' => 'form-control-static'],
+            'rules' => 'required|min:4|unique:users,username',
         ]);
 
         $this->add('password', 'password', [
             'label' => '비밀번호',
             'rules' => 'required|min:6|confirmed',
-            'value' => '',
         ]);
 
         $this->add('password_confirmation', 'password', [
             'label' => '비밀번호 재확인',
             'rules' => 'required',
-            'value' => '',
         ]);
 
         $this->add('name', 'text', [

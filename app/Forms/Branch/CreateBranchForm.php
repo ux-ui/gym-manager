@@ -1,10 +1,10 @@
 <?php
 
-namespace GymManager\Forms;
+namespace GymManager\Forms\Branch;
 
 use Kris\LaravelFormBuilder\Form;
 
-class EditBranchForm extends Form
+class CreateBranchForm extends Form
 {
     public function buildForm()
     {

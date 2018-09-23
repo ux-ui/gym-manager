@@ -3,8 +3,8 @@
 namespace GymManager\Http\Controllers;
 
 use GymManager\Models\Member;
-use GymManager\Forms\EditMemberForm;
-use GymManager\Forms\CreateMemberForm;
+use GymManager\Forms\Member\EditMemberForm;
+use GymManager\Forms\Member\CreateMemberForm;
 use GymManager\Repositories\MemberRepository;
 use Kris\LaravelFormBuilder\FormBuilderTrait;
 use Prettus\Repository\Criteria\RequestCriteria;

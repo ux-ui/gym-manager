@@ -3,8 +3,8 @@
 namespace GymManager\Http\Controllers;
 
 use GymManager\Models\Branch;
-use GymManager\Forms\EditBranchForm;
-use GymManager\Forms\CreateBranchForm;
+use GymManager\Forms\Branch\EditBranchForm;
+use GymManager\Forms\Branch\CreateBranchForm;
 use GymManager\Repositories\BranchRepository;
 use Kris\LaravelFormBuilder\FormBuilderTrait;
 use Prettus\Repository\Criteria\RequestCriteria;

@@ -3,8 +3,8 @@
 namespace GymManager\Http\Controllers;
 
 use GymManager\Models\User;
-use GymManager\Forms\EditUserForm;
-use GymManager\Forms\CreateUserForm;
+use GymManager\Forms\User\EditUserForm;
+use GymManager\Forms\User\CreateUserForm;
 use GymManager\Repositories\UserRepository;
 use Kris\LaravelFormBuilder\FormBuilderTrait;
 use Prettus\Repository\Criteria\RequestCriteria;

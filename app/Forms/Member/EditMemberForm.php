@@ -1,6 +1,6 @@
 <?php
 
-namespace GymManager\Forms;
+namespace GymManager\Forms\Member;
 
 use GymManager\Models\Branch;
 use Kris\LaravelFormBuilder\Form;
@@ -16,6 +16,7 @@ class EditMemberForm extends Form
 
         $this->add('branch_id', 'select', [
             'label' => '지점선택',
+            'rules' => 'required|exists:branches,id',
             'choices' => Branch::all()->pluck('name', 'id')->toArray(),
             'empty_value' => '등록할 지점을 선택하세요.',
         ]);

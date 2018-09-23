@@ -8,7 +8,7 @@ use McCool\LaravelAutoPresenter\BasePresenter;
 class BranchPresenter extends BasePresenter implements Arrayable
 {
     /**
-     * Returns the users avatar.
+     * Returns the presented created_at attribute.
      *
      * @return string
      */

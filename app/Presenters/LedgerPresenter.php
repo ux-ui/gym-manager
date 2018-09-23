@@ -5,8 +5,28 @@ namespace GymManager\Presenters;
 use Illuminate\Contracts\Support\Arrayable;
 use McCool\LaravelAutoPresenter\BasePresenter;
 
-class UserPresenter extends BasePresenter implements Arrayable
+class LedgerPresenter extends BasePresenter implements Arrayable
 {
+    /**
+     * Returns the presented type attribute.
+     *
+     * @return string
+     */
+    public function _type()
+    {
+        return $this->wrappedObject->type;
+    }
+
+    /**
+     * Returns the presented amount attribute.
+     *
+     * @return string
+     */
+    public function _amount()
+    {
+        return number_format($this->wrappedObject->amount);
+    }
+
     /**
      * Returns the presented created_at attribute.
      *
@@ -25,6 +45,8 @@ class UserPresenter extends BasePresenter implements Arrayable
     public function toArray()
     {
         return array_merge($this->wrappedObject->toArray(), [
+            '_type',
+            '_amount',
             '_created_at',
         ]);
     }

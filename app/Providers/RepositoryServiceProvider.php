@@ -24,5 +24,8 @@ class RepositoryServiceProvider extends ServiceProvider
     public function register()
     {
         $this->app->singleton(\GymManager\Repositories\UserRepository::class);
+        $this->app->singleton(\GymManager\Repositories\BranchRepository::class);
+        $this->app->singleton(\GymManager\Repositories\MemberRepository::class);
+        $this->app->singleton(\GymManager\Repositories\LedgerRepository::class);
     }
 }
