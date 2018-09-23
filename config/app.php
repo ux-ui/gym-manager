@@ -154,6 +154,8 @@ return [
         Barryvdh\Debugbar\ServiceProvider::class,
         McCool\LaravelAutoPresenter\AutoPresenterServiceProvider::class,
         anlutro\LaravelSettings\ServiceProvider::class,
+        Prettus\Repository\Providers\RepositoryServiceProvider::class,
+        Kris\LaravelFormBuilder\FormBuilderServiceProvider::class,
 
         /*
          * Application Service Providers...
@@ -163,6 +165,7 @@ return [
         // GymManager\Providers\BroadcastServiceProvider::class,
         GymManager\Providers\EventServiceProvider::class,
         GymManager\Providers\RouteServiceProvider::class,
+        GymManager\Providers\RepositoryServiceProvider::class,
         GymManager\Providers\ComposerServiceProvider::class,
 
     ],
@@ -219,6 +222,7 @@ return [
          */
         'Debugbar' => Barryvdh\Debugbar\Facade::class,
         'Setting' => anlutro\LaravelSettings\Facade::class,
+        'FormBuilder' => Kris\LaravelFormBuilder\Facades\FormBuilder::class,
 
     ],
 

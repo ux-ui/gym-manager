@@ -2,6 +2,7 @@
 
 namespace GymManager\Providers;
 
+use Illuminate\Support\Facades\Blade;
 use Illuminate\Contracts\View\Factory;
 use Illuminate\Support\ServiceProvider;
 use GymManager\Composers\CurrentUserComposer;
@@ -15,6 +16,10 @@ class ComposerServiceProvider extends ServiceProvider
      */
     public function boot(Factory $factory)
     {
+        Blade::directive('title', function ($expression) {
+            return "<?php \$title = $expression ?>";
+        });
+
         $factory->composer('*', CurrentUserComposer::class);
     }
     /**
