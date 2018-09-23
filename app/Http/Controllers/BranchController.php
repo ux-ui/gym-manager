@@ -1,0 +1,142 @@
+<?php
+
+namespace GymManager\Http\Controllers;
+
+use GymManager\Models\Branch;
+use GymManager\Forms\EditBranchForm;
+use GymManager\Forms\CreateBranchForm;
+use GymManager\Repositories\BranchRepository;
+use Kris\LaravelFormBuilder\FormBuilderTrait;
+use Prettus\Repository\Criteria\RequestCriteria;
+use GymManager\Repositories\Criteria\OrderByCriteria;
+
+class BranchController extends Controller
+{
+    use FormBuilderTrait;
+
+    protected const PAGINATE_LIMIT = 20;
+
+    /**
+     * Branch repository implements.
+     *
+     * @var \GymManager\Repositories\BranchRepository
+     */
+    protected $branch;
+
+    /**
+     * Create a new controller instance.
+     *
+     * @param  \GymManager\Repositories\BranchRepository $branch
+     * @return void
+     */
+    public function __construct(BranchRepository $branch)
+    {
+        $this->branch = $branch;
+
+        $this->middleware('auth');
+    }
+
+    /**
+     * Displaying a listing of the branches.
+     *
+     * @return \Illuminate\Http\Response
+     * @throws \Prettus\Repository\Exceptions\RepositoryException
+     */
+    public function index()
+    {
+        $this->branch->pushCriteria(resolve(RequestCriteria::class));
+        $this->branch->pushCriteria(new OrderByCriteria('updated_at', 'desc'));
+        $branches = $this->branch->paginate(self::PAGINATE_LIMIT);
+
+        return view('branch.index', compact('branches'));
+    }
+
+    /**
+     * Display the specified branch.
+     *
+     * @param  \GymManager\Models\Branch  $branch
+     * @return \Illuminate\Http\Response
+     */
+    public function show(Branch $branch)
+    {
+        return view('branch.show', compact('branch'));
+    }
+
+    /**
+     * Show the form for creating a new branch.
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function create()
+    {
+        $form = $this->form(CreateBranchForm::class, [
+            'method' => 'POST',
+            'url' => route('branch.store'),
+        ]);
+
+        return view('branch.create', compact('form'));
+    }
+
+    /**
+     * Store a newly created branch in storage.
+     *
+     * @return \Illuminate\Http\RedirectResponse
+     * @throws \Prettus\Validator\Exceptions\ValidatorException
+     */
+    public function store()
+    {
+        $form = $this->form(CreateBranchForm::class);
+        $form->redirectIfNotValid();
+
+        $branch = $this->branch->create($form->getFieldValues());
+
+        return redirect()->route('branch.show', [$branch]);
+    }
+
+    /**
+     * Show the form for editing the specified branch.
+     *
+     * @param  \GymManager\Models\Branch  $branch
+     * @return \Illuminate\Http\Response
+     */
+    public function edit(Branch $branch)
+    {
+        $form = $this->form(EditBranchForm::class, [
+            'method' => 'PUT',
+            'url' => route('branch.update', [$branch]),
+            'model' => $branch,
+        ]);
+
+        return view('branch.edit', compact('form', 'branch'));
+    }
+
+    /**
+     * Update the specified branch in storage.
+     *
+     * @param  \GymManager\Models\Branch  $branch
+     * @return \Illuminate\Http\RedirectResponse
+     * @throws \Prettus\Validator\Exceptions\ValidatorException
+     */
+    public function update(Branch $branch)
+    {
+        $form = $this->form(EditBranchForm::class);
+        $form->redirectIfNotValid();
+
+        $this->branch->update($form->getFieldValues(), $branch->id);
+
+        return redirect()->route('branch.show', [$branch]);
+    }
+
+    /**
+     * Remove the specified branch from storage.
+     *
+     * @param  \GymManager\Models\Branch  $branch
+     * @return \Illuminate\Http\RedirectResponse
+     */
+    public function destroy(Branch $branch)
+    {
+        $this->branch->delete($branch->id);
+
+        return redirect()->route('branch.index');
+    }
+}

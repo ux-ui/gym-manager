@@ -2,26 +2,19 @@
 
 namespace GymManager\Models;
 
-use GymManager\Presenters\UserPresenter;
-use Illuminate\Notifications\Notifiable;
+use Illuminate\Database\Eloquent\Model;
+use GymManager\Presenters\BranchPresenter;
 use McCool\LaravelAutoPresenter\HasPresenter;
-use Illuminate\Contracts\Auth\MustVerifyEmail;
-use Illuminate\Foundation\Auth\User as Authenticatable;
 
-class User extends Authenticatable implements HasPresenter
+class Branch extends Model implements HasPresenter
 {
-    use Notifiable;
-
     /**
      * The attributes that are mass assignable.
      *
      * @var array
      */
     protected $fillable = [
-        'username',
-        'password',
         'name',
-        'title',
     ];
 
     /**
@@ -36,10 +29,7 @@ class User extends Authenticatable implements HasPresenter
      *
      * @var array
      */
-    protected $hidden = [
-        'password',
-        'remember_token',
-    ];
+    protected $hidden = [];
 
     /**
      * Get the presenter class.
@@ -48,16 +38,16 @@ class User extends Authenticatable implements HasPresenter
      */
     public function getPresenterClass()
     {
-        return UserPresenter::class;
+        return BranchPresenter::class;
     }
 
     /**
-     * Get the branches for the this user.
+     * Get the users for the this branch.
      *
      * @return \Illuminate\Database\Eloquent\Relations\HasMany
      */
     public function users()
     {
-        return $this->hasMany(Branch::class);
+        return $this->hasMany(User::class);
     }
 }
