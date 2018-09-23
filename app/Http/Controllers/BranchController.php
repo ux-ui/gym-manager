@@ -41,9 +41,12 @@ class BranchController extends Controller
      *
      * @return \Illuminate\Http\Response
      * @throws \Prettus\Repository\Exceptions\RepositoryException
+     * @throws \Illuminate\Auth\Access\AuthorizationException
      */
     public function index()
     {
+        $this->authorize('index', Branch::class);
+
         $this->branch->pushCriteria(resolve(RequestCriteria::class));
         $this->branch->pushCriteria(new OrderByCriteria('updated_at', 'desc'));
         $branches = $this->branch->paginate(self::PAGINATE_LIMIT);
@@ -54,11 +57,14 @@ class BranchController extends Controller
     /**
      * Display the specified branch.
      *
-     * @param  \GymManager\Models\Branch  $branch
+     * @param  \GymManager\Models\Branch $branch
      * @return \Illuminate\Http\Response
+     * @throws \Illuminate\Auth\Access\AuthorizationException
      */
     public function show(Branch $branch)
     {
+        $this->authorize('view', Branch::class);
+
         return view('branch.show', compact('branch'));
     }
 
@@ -66,9 +72,12 @@ class BranchController extends Controller
      * Show the form for creating a new branch.
      *
      * @return \Illuminate\Http\Response
+     * @throws \Illuminate\Auth\Access\AuthorizationException
      */
     public function create()
     {
+        $this->authorize('create', Branch::class);
+
         $form = $this->form(CreateBranchForm::class, [
             'method' => 'POST',
             'url' => route('branch.store'),
@@ -82,9 +91,12 @@ class BranchController extends Controller
      *
      * @return \Illuminate\Http\RedirectResponse
      * @throws \Prettus\Validator\Exceptions\ValidatorException
+     * @throws \Illuminate\Auth\Access\AuthorizationException
      */
     public function store()
     {
+        $this->authorize('create', Branch::class);
+
         $form = $this->form(CreateBranchForm::class);
         $form->redirectIfNotValid();
 
@@ -96,11 +108,14 @@ class BranchController extends Controller
     /**
      * Show the form for editing the specified branch.
      *
-     * @param  \GymManager\Models\Branch  $branch
+     * @param  \GymManager\Models\Branch $branch
      * @return \Illuminate\Http\Response
+     * @throws \Illuminate\Auth\Access\AuthorizationException
      */
     public function edit(Branch $branch)
     {
+        $this->authorize('update', Branch::class);
+
         $form = $this->form(EditBranchForm::class, [
             'method' => 'PUT',
             'url' => route('branch.update', [$branch]),
@@ -113,12 +128,15 @@ class BranchController extends Controller
     /**
      * Update the specified branch in storage.
      *
-     * @param  \GymManager\Models\Branch  $branch
+     * @param  \GymManager\Models\Branch $branch
      * @return \Illuminate\Http\RedirectResponse
      * @throws \Prettus\Validator\Exceptions\ValidatorException
+     * @throws \Illuminate\Auth\Access\AuthorizationException
      */
     public function update(Branch $branch)
     {
+        $this->authorize('update', Branch::class);
+
         $form = $this->form(EditBranchForm::class);
         $form->redirectIfNotValid();
 
@@ -130,11 +148,14 @@ class BranchController extends Controller
     /**
      * Remove the specified branch from storage.
      *
-     * @param  \GymManager\Models\Branch  $branch
+     * @param  \GymManager\Models\Branch $branch
      * @return \Illuminate\Http\RedirectResponse
+     * @throws \Illuminate\Auth\Access\AuthorizationException
      */
     public function destroy(Branch $branch)
     {
+        $this->authorize('delete', Branch::class);
+
         $this->branch->delete($branch->id);
 
         return redirect()->route('branch.index');

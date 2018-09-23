@@ -41,9 +41,12 @@ class UserController extends Controller
      *
      * @return \Illuminate\Http\Response
      * @throws \Prettus\Repository\Exceptions\RepositoryException
+     * @throws \Illuminate\Auth\Access\AuthorizationException
      */
     public function index()
     {
+        $this->authorize('index', User::class);
+
         $this->user->pushCriteria(resolve(RequestCriteria::class));
         $this->user->pushCriteria(new OrderByCriteria('updated_at', 'desc'));
         $users = $this->user->paginate(self::PAGINATE_LIMIT);
@@ -54,11 +57,14 @@ class UserController extends Controller
     /**
      * Display the specified user.
      *
-     * @param  \GymManager\Models\User  $user
+     * @param  \GymManager\Models\User $user
      * @return \Illuminate\Http\Response
+     * @throws \Illuminate\Auth\Access\AuthorizationException
      */
     public function show(User $user)
     {
+        $this->authorize('view', User::class);
+
         return view('user.show', compact('user'));
     }
 
@@ -66,9 +72,12 @@ class UserController extends Controller
      * Show the form for creating a new user.
      *
      * @return \Illuminate\Http\Response
+     * @throws \Illuminate\Auth\Access\AuthorizationException
      */
     public function create()
     {
+        $this->authorize('create', User::class);
+
         $form = $this->form(CreateUserForm::class, [
             'method' => 'POST',
             'url' => route('user.store'),
@@ -82,9 +91,12 @@ class UserController extends Controller
      *
      * @return \Illuminate\Http\RedirectResponse
      * @throws \Prettus\Validator\Exceptions\ValidatorException
+     * @throws \Illuminate\Auth\Access\AuthorizationException
      */
     public function store()
     {
+        $this->authorize('create', User::class);
+
         $form = $this->form(CreateUserForm::class);
         $form->redirectIfNotValid();
 
@@ -96,11 +108,14 @@ class UserController extends Controller
     /**
      * Show the form for editing the specified user.
      *
-     * @param  \GymManager\Models\User  $user
+     * @param  \GymManager\Models\User $user
      * @return \Illuminate\Http\Response
+     * @throws \Illuminate\Auth\Access\AuthorizationException
      */
     public function edit(User $user)
     {
+        $this->authorize('update', User::class);
+
         $form = $this->form(EditUserForm::class, [
             'method' => 'PUT',
             'url' => route('user.update', [$user]),
@@ -113,12 +128,15 @@ class UserController extends Controller
     /**
      * Update the specified user in storage.
      *
-     * @param  \GymManager\Models\User  $user
+     * @param  \GymManager\Models\User $user
      * @return \Illuminate\Http\RedirectResponse
      * @throws \Prettus\Validator\Exceptions\ValidatorException
+     * @throws \Illuminate\Auth\Access\AuthorizationException
      */
     public function update(User $user)
     {
+        $this->authorize('update', User::class);
+
         $form = $this->form(EditUserForm::class);
         $form->redirectIfNotValid();
 
@@ -130,11 +148,14 @@ class UserController extends Controller
     /**
      * Remove the specified user from storage.
      *
-     * @param  \GymManager\Models\User  $user
+     * @param  \GymManager\Models\User $user
      * @return \Illuminate\Http\RedirectResponse
+     * @throws \Illuminate\Auth\Access\AuthorizationException
      */
     public function destroy(User $user)
     {
+        $this->authorize('delete', User::class);
+
         $this->user->delete($user->id);
 
         return redirect()->route('user.index');
