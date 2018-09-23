@@ -6,7 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     @stack('meta')
     <link rel="manifest" href="{{ asset('mix-manifest.json') }}">
-    <title>{{ isset($title) ? "$title | " : '' }}{{ Setting::get('gym_name') }}</title>
+    <title>{{ isset($title) ? "$title | " : '' }}{{ Setting::get('gym.name') }}</title>
     <link rel="stylesheet" href="{{ asset('css/app.css') }}">
     @stack('style')
 </head>
@@ -15,13 +15,14 @@
 <nav class="flex items-center justify-between flex-wrap bg-black p-6">
     <div class="flex items-center flex-no-shrink text-white mr-10">
         <span class="font-semibold text-xl tracking-tight">
-            {{ Setting::get('gym_name') }}
+            {{ Setting::get('gym.name') }}
         </span>
     </div>
     <div class="w-full block flex-grow lg:flex lg:items-center lg:w-auto">
         <div class="text-sm lg:flex-grow">
             <a href="#" class="block mt-4 lg:inline-block lg:mt-0 text-white hover:text-teal-lighter mr-4">통계분석</a>
             @if ($currentUser->is_admin)
+                <a href="{{ route('setting') }}" class="block mt-4 lg:inline-block lg:mt-0 text-white hover:text-teal-lighter mr-4">기본설정</a>
                 <a href="{{ route('branch.index') }}" class="block mt-4 lg:inline-block lg:mt-0 text-white hover:text-teal-lighter mr-4">지점관리</a>
                 <a href="{{ route('user.index') }}" class="block mt-4 lg:inline-block lg:mt-0 text-white hover:text-teal-lighter mr-4">직원관리</a>
             @endif

@@ -5,7 +5,7 @@
         <div class="w-full max-w-xs">
             <form class="bg-white shadow-md rounded px-8 pt-6 pb-8 mb-4" method="POST" action="{{ route('login') }}">
                 @csrf
-                <h1 class="mb-5 text-blue-darker">{{ Setting::get('gym_name') }}</h1>
+                <h1 class="mb-5 text-blue-darker">{{ Setting::get('gym.name') }}</h1>
                 <div class="mb-2">
                     <label class="block text-grey-darker text-sm font-bold mb-2" for="username">아이디</label>
                     <input class="shadow appearance-none border rounded w-full py-2 px-3 text-grey-darker mb-3 leading-tight focus:outline-none focus:shadow-outline{{ $errors->has('username') ? ' border-red' : '' }}" id="username" name="username" type="text" value="{{ old('username') }}">
@@ -31,7 +31,7 @@
                 </div>
             </form>
             <p class="text-center text-grey text-xs">
-                ©2018 {{ Setting::get('gym_name') }}. All rights reserved.
+                ©2018 {{ Setting::get('gym.name') }}. All rights reserved.
             </p>
         </div>
     </div>
