@@ -20,7 +20,6 @@
     </div>
     <div class="w-full block flex-grow lg:flex lg:items-center lg:w-auto">
         <div class="text-sm lg:flex-grow">
-            <a href="#" class="block mt-4 lg:inline-block lg:mt-0 text-white hover:text-teal-lighter mr-4">통계분석</a>
             @if ($currentUser->is_admin)
                 <a href="{{ route('setting') }}" class="block mt-4 lg:inline-block lg:mt-0 text-white hover:text-teal-lighter mr-4">기본설정</a>
                 <a href="{{ route('branch.index') }}" class="block mt-4 lg:inline-block lg:mt-0 text-white hover:text-teal-lighter mr-4">지점관리</a>
@@ -28,7 +27,8 @@
             @endif
             <a href="{{ route('member.index') }}" class="block mt-4 lg:inline-block lg:mt-0 text-white hover:text-teal-lighter mr-4">회원관리</a>
             <a href="{{ route('ledger.index') }}" class="block mt-4 lg:inline-block lg:mt-0 text-white hover:text-teal-lighter mr-4">장부관리</a>
-            <a href="#" class="block mt-4 lg:inline-block lg:mt-0 text-white hover:text-teal-lighter mr-4">출결관리</a>
+                <a href="#" class="block mt-4 lg:inline-block lg:mt-0 text-white hover:text-teal-lighter mr-4">통계분석</a>
+                <a href="#" class="block mt-4 lg:inline-block lg:mt-0 text-white hover:text-teal-lighter mr-4">출결관리</a>
         </div>
         <div>
             <span class="block mt-4 lg:inline-block lg:mt-0 text-white mr-4">
