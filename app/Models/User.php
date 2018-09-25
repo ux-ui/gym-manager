@@ -61,12 +61,21 @@ class User extends Authenticatable implements HasPresenter
     }
 
     /**
-     * Get the branches for the this user.
-     *
-     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     * The branches that belong to the user.
      */
-    public function users()
+    public function branches()
     {
-        return $this->hasMany(Branch::class);
+        return $this->belongsToMany(Branch::class);
+    }
+
+    /**
+     * Get branches as plucked array of the specified key.
+     *
+     * @param  string  $key
+     * @return int[]
+     */
+    public function branchesToPluckedArray(string $key)
+    {
+        return $this->branches->pluck($key)->toArray();
     }
 }

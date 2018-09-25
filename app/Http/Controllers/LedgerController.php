@@ -2,6 +2,7 @@
 
 namespace GymManager\Http\Controllers;
 
+use Illuminate\Http\Request;
 use GymManager\Models\Ledger;
 use Illuminate\Support\Facades\Auth;
 use GymManager\Forms\Ledger\EditLedgerForm;
@@ -10,6 +11,7 @@ use GymManager\Repositories\LedgerRepository;
 use Kris\LaravelFormBuilder\FormBuilderTrait;
 use Prettus\Repository\Criteria\RequestCriteria;
 use GymManager\Repositories\Criteria\OrderByCriteria;
+use GymManager\Repositories\Criteria\OfRelatedBranchCriteria;
 
 class LedgerController extends Controller
 {
@@ -40,14 +42,22 @@ class LedgerController extends Controller
     /**
      * Displaying a listing of the ledgers.
      *
+     * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      * @throws \Prettus\Repository\Exceptions\RepositoryException
      */
-    public function index()
+    public function index(Request $request)
     {
         $this->ledger->with(['branch', 'user']);
         $this->ledger->pushCriteria(resolve(RequestCriteria::class));
         $this->ledger->pushCriteria(new OrderByCriteria('updated_at', 'desc'));
+
+        $default = Auth::user()->branchesToPluckedArray('id');
+        $branches = array_filter($request->get('branches', $default), function ($value) use ($default) {
+            return in_array($value, $default);
+        });
+        $this->ledger->pushCriteria(new OfRelatedBranchCriteria($branches));
+
         $ledgers = $this->ledger->paginate(self::PAGINATE_LIMIT);
 
         return view('ledger.index', compact('ledgers'));

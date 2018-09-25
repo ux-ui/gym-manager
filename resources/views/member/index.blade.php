@@ -4,6 +4,7 @@
 @section('content')
     <div class="container">
         <h3 class="border-b mb-2 pb-2">{{ $title }}</h3>
+        @include('_partials.filters', ['action' => route('member.index')])
         <table class="table">
             <thead>
             <tr>

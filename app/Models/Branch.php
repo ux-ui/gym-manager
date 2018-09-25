@@ -42,12 +42,30 @@ class Branch extends Model implements HasPresenter
     }
 
     /**
-     * Get the users for the this branch.
-     *
-     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     * The users that belong to the branch.
      */
     public function users()
     {
-        return $this->hasMany(User::class);
+        return $this->belongsToMany(User::class);
+    }
+
+    /**
+     * Get the ledgers for the branch.
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     */
+    public function ledgers()
+    {
+        return $this->hasMany(Ledger::class);
+    }
+
+    /**
+     * Get the members for the branch.
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     */
+    public function members()
+    {
+        return $this->hasMany(Member::class);
     }
 }

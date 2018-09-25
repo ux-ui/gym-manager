@@ -2,13 +2,16 @@
 
 namespace GymManager\Http\Controllers;
 
+use Illuminate\Http\Request;
 use GymManager\Models\Member;
+use Illuminate\Support\Facades\Auth;
 use GymManager\Forms\Member\EditMemberForm;
 use GymManager\Forms\Member\CreateMemberForm;
 use GymManager\Repositories\MemberRepository;
 use Kris\LaravelFormBuilder\FormBuilderTrait;
 use Prettus\Repository\Criteria\RequestCriteria;
 use GymManager\Repositories\Criteria\OrderByCriteria;
+use GymManager\Repositories\Criteria\OfRelatedBranchCriteria;
 
 class MemberController extends Controller
 {
@@ -39,14 +42,22 @@ class MemberController extends Controller
     /**
      * Displaying a listing of the members.
      *
+     * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      * @throws \Prettus\Repository\Exceptions\RepositoryException
      */
-    public function index()
+    public function index(Request $request)
     {
         $this->member->with(['branch']);
         $this->member->pushCriteria(resolve(RequestCriteria::class));
         $this->member->pushCriteria(new OrderByCriteria('updated_at', 'desc'));
+
+        $default = Auth::user()->branchesToPluckedArray('id');
+        $branches = array_filter($request->get('branches', $default), function ($value) use ($default) {
+            return in_array($value, $default);
+        });
+        $this->member->pushCriteria(new OfRelatedBranchCriteria($branches));
+
         $members = $this->member->paginate(self::PAGINATE_LIMIT);
 
         return view('member.index', compact('members'));
