@@ -2,13 +2,15 @@
 
 namespace GymManager\Forms\Ledger;
 
-use GymManager\Models\Branch;
 use Kris\LaravelFormBuilder\Form;
+use Illuminate\Support\Facades\Auth;
 
 class CreateLedgerForm extends Form
 {
     public function buildForm()
     {
+        $currentUser = Auth::user();
+
         $this->add('type', 'choice', [
             'label' => '구분',
             'rules' => 'required|in:+,-',
@@ -20,7 +22,7 @@ class CreateLedgerForm extends Form
         $this->add('branch_id', 'select', [
             'label' => '지점',
             'rules' => 'required|exists:branches,id',
-            'choices' => Branch::all()->pluck('name', 'id')->toArray(),
+            'choices' => $currentUser->branches->pluck('name', 'id')->toArray(),
             'empty_value' => '등록할 지점을 선택하세요.',
         ]);
 
