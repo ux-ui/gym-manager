@@ -5,7 +5,7 @@ namespace GymManager\Policies;
 use GymManager\Models\User;
 use Illuminate\Auth\Access\HandlesAuthorization;
 
-class UserPolicy
+class AdminPolicy
 {
     use HandlesAuthorization;
 
@@ -17,7 +17,7 @@ class UserPolicy
      */
     public function index(User $user)
     {
-        return $user->is_admin;
+        return $user->is_admin === true;
     }
 
     /**
@@ -28,7 +28,7 @@ class UserPolicy
      */
     public function view(User $user)
     {
-        return $user->is_admin;
+        return $user->is_admin === true;
     }
 
     /**
@@ -39,7 +39,7 @@ class UserPolicy
      */
     public function create(User $user)
     {
-        return $user->is_admin;
+        return $user->is_admin === true;
     }
 
     /**
@@ -50,7 +50,7 @@ class UserPolicy
      */
     public function update(User $user)
     {
-        return $user->is_admin;
+        return $user->is_admin === true;
     }
 
     /**
@@ -61,7 +61,7 @@ class UserPolicy
      */
     public function delete(User $user)
     {
-        return $user->is_admin;
+        return $user->is_admin === true;
     }
 
     /**
@@ -72,7 +72,7 @@ class UserPolicy
      */
     public function restore(User $user)
     {
-        return $user->is_admin;
+        return $user->is_admin === true;
     }
 
     /**
@@ -83,6 +83,6 @@ class UserPolicy
      */
     public function forceDelete(User $user)
     {
-        return $user->is_admin;
+        return $user->is_admin === true;
     }
 }

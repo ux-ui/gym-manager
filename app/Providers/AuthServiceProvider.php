@@ -13,8 +13,8 @@ class AuthServiceProvider extends ServiceProvider
      * @var array
      */
     protected $policies = [
-        \GymManager\Models\User::class => \GymManager\Policies\UserPolicy::class,
-        \GymManager\Models\Branch::class => \GymManager\Policies\BranchPolicy::class
+        \GymManager\Models\User::class => \GymManager\Policies\AdminPolicy::class,
+        \GymManager\Models\Branch::class => \GymManager\Policies\AdminPolicy::class
     ];
 
     /**
