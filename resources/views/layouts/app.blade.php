@@ -27,7 +27,7 @@
             @endif
             <a href="{{ route('member.index') }}" class="block mt-4 lg:inline-block lg:mt-0 text-white hover:text-teal-lighter mr-4">회원관리</a>
             <a href="{{ route('ledger.index') }}" class="block mt-4 lg:inline-block lg:mt-0 text-white hover:text-teal-lighter mr-4">장부관리</a>
-            <a href="#" class="block mt-4 lg:inline-block lg:mt-0 text-white hover:text-teal-lighter mr-4">통계분석</a>
+            <a href="{{ route('statistics.index') }}" class="block mt-4 lg:inline-block lg:mt-0 text-white hover:text-teal-lighter mr-4">통계분석</a>
             <a href="{{ route('attendance.index') }}" class="block mt-4 lg:inline-block lg:mt-0 text-white hover:text-teal-lighter mr-4">출결관리</a>
         </div>
         <div>

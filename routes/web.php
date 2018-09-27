@@ -13,4 +13,6 @@ Route::group(['middleware' => ['auth']], function () {
 
     Route::get('attendance', 'AttendanceController@index')->name('attendance.index');
     Route::post('attendance', 'AttendanceController@store')->name('attendance.store');
+
+    Route::get('statistics/{branch?}', 'StatisticsController@index')->name('statistics.index');
 });
