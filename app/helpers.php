@@ -27,3 +27,28 @@ if ( ! function_exists('number')) {
         return (($result->total() - $loop->iteration) + 1) - (($result->currentPage() - 1) * $result->perPage());
     }
 }
+
+if ( ! function_exists('random_color_part')) {
+    /**
+     * Generate random color part for make hex color code.
+     *
+     * @return string
+     */
+    function random_color_part()
+    {
+        return str_pad(dechex(mt_rand( 0, 255)), 2, '0', STR_PAD_LEFT);
+    }
+}
+
+
+if ( ! function_exists('random_color')) {
+    /**
+     * Generate random color for make hex color full code.
+     *
+     * @return string
+     */
+    function random_color()
+    {
+        return random_color_part() . random_color_part() . random_color_part();
+    }
+}

@@ -11,12 +11,9 @@
                 </div>
                 <div class="w-3/4 bg-grey-light">
                     <div class="text-left">
-                        <label>
-                            <input type="radio" name="branch" value="0"{{ request()->get('branch') == 0 || ! request()->has('branch') ? ' checked' : '' }}> 통합보기
-                        </label>
                         @foreach ($currentUser->branches as $key => $value)
                             @php
-                                $checked = $value->id == request()->get('branch');
+                                $checked = $value->id == request()->get('branch') || (! request()->has('branch') && $key < 1);
                             @endphp
                             <label>
                                 <input type="radio" name="branch" value="{{ $value->id }}"{{ $checked ? ' checked' : '' }}> {{ $value->name }}
@@ -25,9 +22,25 @@
                     </div>
                 </div>
             </div>
+            <div class="flex mb-4">
+                <div class="w-1/4 bg-grey text-center">
+                    <b><label for="from">날짜선택</label></b>
+                </div>
+                <div class="w-3/4 bg-grey-light">
+                    <div class="text-left">
+                        <input type="date" id="from" name="from" value="{{ $from->format('Y-m-d') }}"> 부터
+                        <input type="date" id="to" name="to" value="{{ $to->format('Y-m-d') }}"> 까지
+                    </div>
+                </div>
+            </div>
             <div class="text-right">
                 <button type="submit">적용</button>
             </div>
         </form>
+        {!! $memberRegistrationChart->container() !!}
     </div>
 @endsection
+
+@push('script')
+    {!! $memberRegistrationChart->script() !!}
+@endpush
