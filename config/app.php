@@ -156,6 +156,7 @@ return [
         anlutro\LaravelSettings\ServiceProvider::class,
         Prettus\Repository\Providers\RepositoryServiceProvider::class,
         Kris\LaravelFormBuilder\FormBuilderServiceProvider::class,
+        ConsoleTVs\Charts\ChartsServiceProvider::class,
 
         /*
          * Application Service Providers...
