@@ -51,4 +51,14 @@ class Member extends Model implements HasPresenter
     {
         return $this->belongsTo(Branch::class);
     }
+
+    /**
+     * Get the attendances for the member.
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     */
+    public function attendances()
+    {
+        return $this->hasMany(Attendance::class);
+    }
 }

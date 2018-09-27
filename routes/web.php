@@ -11,5 +11,6 @@ Route::group(['middleware' => ['auth']], function () {
     Route::resource('member', 'MemberController');
     Route::resource('ledger', 'LedgerController');
 
-    Route::get('attendance/{branch?}', 'AttendanceController@index')->name('attendance.index');
+    Route::get('attendance', 'AttendanceController@index')->name('attendance.index');
+    Route::post('attendance', 'AttendanceController@store')->name('attendance.store');
 });
