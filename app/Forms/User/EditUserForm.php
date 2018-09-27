@@ -2,6 +2,7 @@
 
 namespace GymManager\Forms\User;
 
+use GymManager\Models\Branch;
 use Kris\LaravelFormBuilder\Form;
 
 class EditUserForm extends Form
@@ -34,6 +35,17 @@ class EditUserForm extends Form
         $this->add('title', 'text', [
             'label' => '직책',
             'rules' => 'required',
+        ]);
+
+        $this->add('branches', 'choice', [
+            'label' => '관리지점',
+            'expanded' => true,
+            'multiple' => true,
+            'choices' => Branch::all()->pluck('name', 'id')->toArray(),
+            'rules' => 'array|exists:branches,id',
+            'selected' => function ($data) {
+                return $data ? array_pluck($data, 'id') : null;
+            },
         ]);
     }
 }

@@ -141,6 +141,8 @@ class UserController extends Controller
         $form->redirectIfNotValid();
 
         $this->user->update($form->getFieldValues(), $user->id);
+        $user->branches()->detach();
+        $user->branches()->attach($form->getFieldValues()['branches']);
 
         return redirect()->route('user.show', [$user]);
     }
