@@ -2,7 +2,7 @@
 
 namespace GymManager\Charts;
 
-use ConsoleTVs\Charts\Classes\Chartjs\Chart;
+use ConsoleTVs\Charts\Classes\Fusioncharts\Chart;
 
 class MemberRegistrationChart extends Chart
 {
