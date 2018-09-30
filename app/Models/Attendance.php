@@ -47,12 +47,12 @@ class Attendance extends Model
     protected $hidden = [];
 
     /**
-     * Get the user that owns the attendance.
+     * Get the member that owns the attendance.
      *
      * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
      */
-    public function user()
+    public function member()
     {
-        return $this->belongsTo(User::class);
+        return $this->belongsTo(Member::class);
     }
 }

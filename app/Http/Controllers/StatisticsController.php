@@ -3,6 +3,8 @@
 namespace GymManager\Http\Controllers;
 
 use GymManager\Charts\MemberRegistrationChart;
+use GymManager\Models\Attendance;
+use GymManager\Models\Ledger;
 use GymManager\Models\Member;
 use GymManager\Repositories\BranchRepository;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
@@ -170,5 +172,189 @@ class StatisticsController extends Controller
         }
 
         return view('statistics.member_registration.daily', compact('year', 'month', 'branches', 'chart'));
+    }
+
+    /**
+     * Show the yearly member attendance statistics.
+     *
+     * @param  \Illuminate\Support\Collection  $branches
+     * @param  array  $conditions
+     * @return \Illuminate\Http\Response
+     */
+    private function _MemberAttendanceYearly(Collection $branches, array $conditions)
+    {
+        $years = Attendance::groupBy(DB::raw('YEAR(`date`)'))
+            ->get([DB::raw('YEAR(`date`) as `year`')])->toArray();
+
+        $chart = new MemberRegistrationChart();
+        $chart->title('연도별 회원 출석률 지표');
+        $chart->labels(array_map(function ($value) {
+            return sprintf("%d년", $value);
+        }, array_pluck($years, 'year')));
+
+        foreach ($branches as $branch) {
+            $memberCount = $branch->members()->count();
+            $collection = array_fill_keys(array_pluck($years, 'year'), 0);
+
+            Attendance::whereHas('member.branch', function ($query) use ($branch) {
+                $query->where('id', $branch->id);
+            })->groupBy(DB::raw('YEAR(`date`)'))
+                ->get([DB::raw('COUNT(*) as `count`'), DB::raw('YEAR(`date`) as `year`')])
+                ->each(function ($data) use (&$collection, $memberCount) {
+                    $collection[$data->year] = round($data->count / $memberCount * 100, 1);
+                });
+
+            $chart->dataset($branch->name, 'line', array_values($collection));
+        }
+
+        return view('statistics.member_attendance.yearly', compact('branches', 'chart'));
+    }
+
+    /**
+     * Show the monthly member attendance statistics.
+     *
+     * @param  \Illuminate\Support\Collection  $branches
+     * @param  array  $conditions
+     * @return \Illuminate\Http\Response
+     */
+    private function _MemberAttendanceMonthly(Collection $branches, array $conditions)
+    {
+        $year = $conditions['year'] ?? date("Y");
+
+        $chart = new MemberRegistrationChart();
+        $chart->title("{$year}년도 월별 회원 출석률 지표");
+        $chart->labels(['1월', '2월', '3월', '5월', '6월', '7월', '8월', '9월', '9월', '10월', '11월', '12월']);
+
+        foreach ($branches as $branch) {
+            $memberCount = $branch->members()->count();
+            $month = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0];
+
+            Attendance::whereHas('member.branch', function ($query) use ($branch) {
+                $query->where('id', $branch->id);
+            })->whereYear('date', $year)
+                ->groupBy(DB::raw('YEAR(`date`)'))
+                ->get([DB::raw('COUNT(*) as `count`'), DB::raw('MONTH(`date`) as `month`')])
+                ->each(function ($data) use (&$month, $memberCount) {
+                    $month[$data->month - 1] = round($data->count / $memberCount * 100, 1);
+                });
+
+            $chart->dataset($branch->name, 'line', $month);
+        }
+
+        return view('statistics.member_attendance.monthly', compact('year', 'branches', 'chart'));
+    }
+
+    /**
+     * Show the daily member attendance statistics.
+     *
+     * @param  \Illuminate\Support\Collection  $branches
+     * @param  array  $conditions
+     * @return \Illuminate\Http\Response
+     */
+    private function _MemberAttendanceDaily(Collection $branches, array $conditions)
+    {
+        $year = $conditions['year'] ?? date("Y");
+        $month = $conditions['month'] ?? date("m");
+        $last_day = date("t", strtotime(sprintf("%s-%s-01", $year, $month)));
+
+        $days = [];
+        for ($i = 0; $i < $last_day; $i++) $days[] = sprintf("%d일", $i + 1);
+
+        $chart = new MemberRegistrationChart();
+        $chart->title("{$year}년 {$month}월 일별 회원 출석률 지표");
+        $chart->labels($days);
+
+        foreach ($branches as $branch) {
+            $memberCount = $branch->members()->count();
+            $collection = array_fill(0, sizeof($days), 0);
+
+            Attendance::whereHas('member.branch', function ($query) use ($branch) {
+                $query->where('id', $branch->id);
+            })->whereYear('date', $year)
+                ->whereMonth('date', $month)
+                ->groupBy(DB::raw('DAY(`date`)'))
+                ->get([DB::raw('COUNT(*) as `count`'), DB::raw('DAY(`date`) as `day`')])
+                ->each(function ($data) use (&$collection, $memberCount) {
+                    $collection[$data->day - 1] = round($data->count / $memberCount * 100, 1);
+                });
+
+            $chart->dataset($branch->name, 'line', array_values($collection));
+        }
+
+        return view('statistics.member_attendance.daily', compact('year', 'month', 'branches', 'chart'));
+    }
+
+    /**
+     * Show the yearly ledger statistics.
+     *
+     * @param  \Illuminate\Support\Collection  $branches
+     * @param  array  $conditions
+     * @return \Illuminate\Http\Response
+     */
+    private function _LedgerYearly(Collection $branches, array $conditions)
+    {
+        $ledgers = Ledger::whereIn('branch_id', $branches->pluck('id'))
+            ->groupBy(DB::raw('YEAR(`created_at`)'))
+            ->groupBy(DB::raw('branch_id'))->get([
+                DB::raw('SUM(IF(type=\'+\', `amount`, 0)) as `add`'),
+                DB::raw('SUM(IF(type=\'-\', `amount`, 0)) as `sub`'),
+                DB::raw('YEAR(`created_at`) as `year`'),
+                DB::raw('`branch_id`'),
+            ]);
+
+        return view('statistics.ledger.yearly', compact('branches', 'ledgers'));
+    }
+
+    /**
+     * Show the monthly ledger statistics.
+     *
+     * @param  \Illuminate\Support\Collection  $branches
+     * @param  array  $conditions
+     * @return \Illuminate\Http\Response
+     */
+    private function _LedgerMonthly(Collection $branches, array $conditions)
+    {
+        $year = $conditions['year'] ?? date("Y");
+
+        $ledgers = Ledger::whereIn('branch_id', $branches->pluck('id'))
+            ->whereYear('created_at', $year)
+            ->groupBy(DB::raw('MONTH(`created_at`)'))
+            ->groupBy(DB::raw('branch_id'))->get([
+                DB::raw('SUM(IF(type=\'+\', `amount`, 0)) as `add`'),
+                DB::raw('SUM(IF(type=\'-\', `amount`, 0)) as `sub`'),
+                DB::raw('YEAR(`created_at`) as `year`'),
+                DB::raw('MONTH(`created_at`) as `month`'),
+                DB::raw('`branch_id`'),
+            ]);
+
+        return view('statistics.ledger.monthly', compact('branches', 'ledgers', 'year'));
+    }
+
+    /**
+     * Show the daily ledger statistics.
+     *
+     * @param  \Illuminate\Support\Collection  $branches
+     * @param  array  $conditions
+     * @return \Illuminate\Http\Response
+     */
+    private function _LedgerDaily(Collection $branches, array $conditions)
+    {
+        $year = $conditions['year'] ?? date("Y");
+        $month = $conditions['month'] ?? date("m");
+
+        $ledgers = Ledger::whereIn('branch_id', $branches->pluck('id'))
+            ->whereYear('created_at', $year)
+            ->whereMonth('created_at', $month)
+            ->groupBy(DB::raw('DAY(`created_at`)'))
+            ->groupBy(DB::raw('branch_id'))->get([
+                DB::raw('SUM(IF(type=\'+\', `amount`, 0)) as `add`'),
+                DB::raw('SUM(IF(type=\'-\', `amount`, 0)) as `sub`'),
+                DB::raw('YEAR(`created_at`) as `year`'),
+                DB::raw('MONTH(`created_at`) as `month`'),
+                DB::raw('DAY(`created_at`) as `day`'),
+                DB::raw('`branch_id`'),
+            ]);
+
+        return view('statistics.ledger.daily', compact('branches', 'ledgers', 'year', 'month'));
     }
 }
