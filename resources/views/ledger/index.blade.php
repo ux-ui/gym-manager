@@ -7,13 +7,6 @@
         @include('_partials.filters', ['action' => route('ledger.index')])
         <table class="table">
             <colgroup>
-                <col width="50">
-                <col width="50">
-                <col width="100">
-                <col width="*">
-                <col width="150">
-                <col width="150">
-                <col width="100">
             </colgroup>
             <thead>
             <tr>

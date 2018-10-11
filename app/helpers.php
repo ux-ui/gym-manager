@@ -52,3 +52,17 @@ if ( ! function_exists('random_color')) {
         return random_color_part() . random_color_part() . random_color_part();
     }
 }
+
+if (! function_exists('active')) {
+    /**
+     * Sets the menu item class for an active route.
+     *
+     * @param  string  $routes
+     * @param  bool  $condition
+     * @return string
+     */
+    function active($routes, bool $condition = true): string
+    {
+        return call_user_func_array([app('router'), 'is'], (array) $routes) && $condition ? 'active' : '';
+    }
+}

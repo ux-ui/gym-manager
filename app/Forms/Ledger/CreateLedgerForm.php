@@ -13,8 +13,8 @@ class CreateLedgerForm extends Form
 
         $this->add('type', 'choice', [
             'label' => '구분',
-            'rules' => 'required|in:+,-',
-            'choices' => ['+' => '+', '-' => '-'],
+            'rules' => 'in:+,-',
+            'choices' => ['+' => '수입', '-' => '지출'],
             'expanded' => true,
             'multiple' => false,
         ]);

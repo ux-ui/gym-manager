@@ -15,8 +15,25 @@
                 <td>{{ $member->branch->name }}</td>
             </tr>
             <tr>
-                <th>생성일</th>
-                <td>{{ $member->_created_at }}</td>
+                <th>주소</th>
+                <td>{{ $member->address }}</td>
+            </tr>
+            <tr>
+                <th>체중</th>
+                <td>{{ $member->weight }}</td>
+            </tr>
+            <tr>
+                <th>신장</th>
+                <td>{{ $member->height }}</td>
+            </tr>
+            <tr>
+            <tr>
+                <th>생년월일</th>
+                <td>{{ $member->bdate }}</td>
+            </tr>
+            <tr>
+                <th>등록일</th>
+                <td>{{ $member->regdate }}</td>
             </tr>
             </tbody>
         </table>

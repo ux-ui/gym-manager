@@ -2,13 +2,22 @@
 @extends('layouts.app')
 
 @section('content')
-    <div class="container">
-        <h3 class="border-b mb-2 pb-2">{{ $title }}</h3>
-        {!! form_start($form) !!}
-        {!! form_rest($form) !!}
-        <div class="text-right">
-            <button type="submit">저장</button>
+<div class="content-wrapper">
+    <div class="row">
+        <div class="col-lg-12 grid-margin stretch-card">
+            <div class="card">
+                <div class="card-body">
+                    <h4 class="card-title">{{ $title }}</h4>
+                    {!! form_start($form) !!}
+                    {!! form_rest($form) !!}
+                    <div class="text-right">
+                        <button type="submit" class="btn btn-primary">저장</button>
+                    </div>
+                    {!! form_end($form) !!}
+                </div>
+            </div>
         </div>
-        {!! form_end($form) !!}
     </div>
+</div>
+
 @endsection

@@ -142,7 +142,7 @@ class BranchController extends Controller
 
         $this->branch->update($form->getFieldValues(), $branch->id);
 
-        return redirect()->route('branch.show', [$branch]);
+        return redirect()->route('branch.edit', [$branch]);
     }
 
     /**

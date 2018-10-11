@@ -1,4 +1,4 @@
-@title('회원생성')
+@title('회원등록')
 @extends('layouts.app')
 
 @section('content')
@@ -7,7 +7,7 @@
         {!! form_start($form) !!}
         {!! form_rest($form) !!}
         <div class="text-right">
-            <button type="submit">생성</button>
+            <button type="submit">등록</button>
             <a href="{{ route('member.index') }}">취소</a>
         </div>
         {!! form_end($form) !!}

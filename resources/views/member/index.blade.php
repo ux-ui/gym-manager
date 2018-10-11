@@ -2,37 +2,51 @@
 @extends('layouts.app')
 
 @section('content')
-    <div class="container">
-        <h3 class="border-b mb-2 pb-2">{{ $title }}</h3>
-        @include('_partials.filters', ['action' => route('member.index')])
-        <table class="table">
-            <thead>
-            <tr>
-                <th>번호</th>
-                <th>회원명</th>
-                <th>지점명</th>
-                <th>생성일</th>
-                <th>비고</th>
-            </tr>
-            </thead>
-            <tbody>
-            @foreach ($members as $member)
-                <tr>
-                    <td>{{ number($members, $loop) }}</td>
-                    <td>{{ $member->name }}</td>
-                    <td>{{ $member->branch->name }}</td>
-                    <td>{{ $member->_created_at }}</td>
-                    <td>
-                        <a href="{{ route('member.show', [$member]) }}">보기</a>
-                        <a href="{{ route('member.edit', [$member]) }}">수정</a>
-                    </td>
-                </tr>
-            @endforeach
-            </tbody>
-        </table>
-        <div class="text-right">
-            <a href="{{ route('member.create') }}">회원생성</a>
+    <div class="content-wrapper">
+        <div class="row">
+            <div class="col-lg-12 grid-margin stretch-card">
+                <div class="card">
+                    <div class="card-body">
+                        <h4 class="card-title">{{ $title }}</h4>
+                        <table class="table table-bordered">
+                            <colgroup>
+                                <col width="50">
+                                <col>
+                                <col>
+                                <col width="150">
+                                <col width="150">
+                            </colgroup>
+                            <thead>
+                            <tr>
+                                <th>번호</th>
+                                <th>회원명</th>
+                                <th>지점명</th>
+                                <th>등록일</th>
+                                <th>비고</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            @foreach ($members as $member)
+                                <tr>
+                                    <td>{{ number($members, $loop) }}</td>
+                                    <td>{{ $member->name }}</td>
+                                    <td>{{ $member->branch->name }}</td>
+                                    <td>{{ $member->regdate }}</td>
+                                    <td>
+                                        <a href="{{ route('member.show', [$member]) }}">보기</a>
+                                        <a href="{{ route('member.edit', [$member]) }}">수정</a>
+                                    </td>
+                                </tr>
+                            @endforeach
+                            </tbody>
+                        </table>
+                        {{ $members->links() }}
+                        <div class="text-right">
+                            <a class="btn btn-primary" href="{{ route('member.create') }}">회원등록</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
         </div>
-        {{ $members->links() }}
     </div>
 @endsection

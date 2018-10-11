@@ -7,7 +7,7 @@
         {!! form_start($form) !!}
         {!! form_rest($form) !!}
         <div class="text-right">
-            <button type="submit">저장</button>
+            <button type="submit">수정</button>
             <a href="{{ route('user.index') }}">취소</a>
         </div>
         {!! form_end($form) !!}

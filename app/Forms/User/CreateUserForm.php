@@ -39,7 +39,7 @@ class CreateUserForm extends Form
             'expanded' => true,
             'multiple' => true,
             'choices' => Branch::all()->pluck('name', 'id')->toArray(),
-            'rules' => 'required|array|exists:branches,id',
+            'rules' => 'array|exists:branches,id',
         ]);
     }
 }

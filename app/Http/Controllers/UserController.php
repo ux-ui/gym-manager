@@ -2,6 +2,7 @@
 
 namespace GymManager\Http\Controllers;
 
+use Illuminate\Support\Facades\Hash;
 use GymManager\Models\User;
 use GymManager\Forms\User\EditUserForm;
 use GymManager\Forms\User\CreateUserForm;
@@ -100,7 +101,13 @@ class UserController extends Controller
         $form = $this->form(CreateUserForm::class);
         $form->redirectIfNotValid();
 
-        $user = $this->user->create($form->getFieldValues());
+        $data = $form->getFieldValues();
+        $data['password'] = Hash::make($data['password']);
+
+        $user = $this->user->create($data);
+        foreach ($data['branch_id'] as $id) {
+            $user->branches()->attach($id);
+        }
 
         return redirect()->route('user.show', [$user]);
     }
@@ -122,7 +129,7 @@ class UserController extends Controller
             'model' => $user,
         ]);
 
-        return view('user.edit', compact('form', 'user'));
+        return view('user.create', compact('form', 'user'));
     }
 
     /**
@@ -140,11 +147,17 @@ class UserController extends Controller
         $form = $this->form(EditUserForm::class);
         $form->redirectIfNotValid();
 
-        $this->user->update($form->getFieldValues(), $user->id);
-        $user->branches()->detach();
-        $user->branches()->attach($form->getFieldValues()['branches']);
+        $data = $form->getFieldValues();
+        $data['password'] = Hash::make($data['password']);
 
-        return redirect()->route('user.show', [$user]);
+        $this->user->update($data, $user->id);
+
+        $user->branches()->detach();
+        foreach ($data['branches'] as $id) {
+            $user->branches()->attach($id);
+        }
+
+        return redirect()->route('user.create', [$user]);
     }
 
     /**

@@ -16,6 +16,12 @@ class Member extends Model implements HasPresenter
     protected $fillable = [
         'name',
         'branch_id',
+        'address',
+        'weight',
+        'height',
+        'bdate',
+        'regdate',
+        'memo',
     ];
 
     /**
