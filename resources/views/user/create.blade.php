@@ -10,7 +10,7 @@
                         <h4 class="card-title">{{ $title }}</h4>
                         {!! form_start($form) !!}
                         {!! form_rest($form) !!}
-                        <div class="text-right">
+                        <div class="btn_write text-center">
                             <button type="submit" class="btn btn-primary">등록</button>
                             <a class="btn btn-danger" href="{{ route('user.index') }}">취소</a>
                         </div>

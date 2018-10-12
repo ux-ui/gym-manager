@@ -102,7 +102,7 @@ class BranchController extends Controller
 
         $branch = $this->branch->create($form->getFieldValues());
 
-        return redirect()->route('branch.show', [$branch]);
+        return redirect()->route('branch.index', [$branch]);
     }
 
     /**

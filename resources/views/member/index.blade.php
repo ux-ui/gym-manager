@@ -8,10 +8,15 @@
                 <div class="card">
                     <div class="card-body">
                         <h4 class="card-title">{{ $title }}</h4>
-                        <table class="table table-bordered">
+                        <div class="menu_info bg_fcfcfc">
+                            <div class="btn_area text-right">
+                                <a class="btn btn-primary" href="{{ route('member.create') }}">회원등록</a>
+                            </div>
+                        </div>
+                        <table class="table">
                             <colgroup>
                                 <col width="50">
-                                <col>
+                                <col width="100">
                                 <col>
                                 <col width="150">
                                 <col width="150">
@@ -19,8 +24,8 @@
                             <thead>
                             <tr>
                                 <th>번호</th>
-                                <th>회원명</th>
                                 <th>지점명</th>
+                                <th>회원명</th>
                                 <th>등록일</th>
                                 <th>비고</th>
                             </tr>
@@ -29,21 +34,18 @@
                             @foreach ($members as $member)
                                 <tr>
                                     <td>{{ number($members, $loop) }}</td>
+                                    <td class="text-center">{{ $member->branch->name }}</td>
                                     <td>{{ $member->name }}</td>
-                                    <td>{{ $member->branch->name }}</td>
-                                    <td>{{ $member->regdate }}</td>
-                                    <td>
-                                        <a href="{{ route('member.show', [$member]) }}">보기</a>
-                                        <a href="{{ route('member.edit', [$member]) }}">수정</a>
+                                    <td class="text-center">{{ $member->regdate }}</td>
+                                    <td class="text-center">
+                                        <a class="btn btn-sm btn-default" href="{{ route('member.show', [$member]) }}">보기</a>
+                                        <a class="btn btn-sm btn-default" href="{{ route('member.edit', [$member]) }}">수정</a>
                                     </td>
                                 </tr>
                             @endforeach
                             </tbody>
                         </table>
                         {{ $members->links() }}
-                        <div class="text-right">
-                            <a class="btn btn-primary" href="{{ route('member.create') }}">회원등록</a>
-                        </div>
                     </div>
                 </div>
             </div>

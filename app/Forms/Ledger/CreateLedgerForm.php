@@ -2,6 +2,7 @@
 
 namespace GymManager\Forms\Ledger;
 
+use GymManager\Models\Branch;
 use Kris\LaravelFormBuilder\Form;
 use Illuminate\Support\Facades\Auth;
 
@@ -13,8 +14,11 @@ class CreateLedgerForm extends Form
 
         $this->add('type', 'choice', [
             'label' => '구분',
-            'rules' => 'in:+,-',
             'choices' => ['+' => '수입', '-' => '지출'],
+            'choice_options' => [
+                'wrapper' => ['class' => 'choice-wrapper'],
+                'label_attr' => ['class' => 'label-class'],
+            ],
             'expanded' => true,
             'multiple' => false,
         ]);
@@ -33,7 +37,7 @@ class CreateLedgerForm extends Form
 
         $this->add('amount', 'text', [
             'label' => '금액',
-            'rules' => 'required|integer',
+            'rules' => 'required',
         ]);
     }
 }

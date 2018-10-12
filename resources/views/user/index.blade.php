@@ -8,7 +8,12 @@
                 <div class="card">
                     <div class="card-body">
                         <h4 class="card-title">{{ $title }}</h4>
-                        <table class="table table-bordered">
+                        <div class="menu_info bg_fcfcfc">
+                            <div class="btn_area text-right">
+                                <a href="{{ route('user.create') }}" class="btn btn-primary">직원등록</a>
+                            </div>
+                        </div>
+                        <table class="table">
                             <colgroup>
                                 <col width="50">
                                 <col>
@@ -36,11 +41,11 @@
                                     <td class="text-center">{{ $user->username }}</td>
                                     <td class="text-center">{{ $user->name }}</td>
                                     <td>{{ $user->title }}</td>
-                                    <td class="text-center">{!! $user->branches->implode('name', '<br>') !!}</td>
+                                    <td class="text-center">{!! $user->branches->implode('name', ',') !!}</td>
                                     <td class="text-center">{{ $user->_created_at }}</td>
                                     <td class="text-center">
                                         <div class="btn-group-sm">
-                                            <a class="btn btn-sm btn-primary" href="{{ route('user.edit', [$user]) }}">수정</a>
+                                            <a class="btn btn-sm btn-default" href="{{ route('user.edit', [$user]) }}">수정</a>
                                         </div>
                                     </td>
                                 </tr>
@@ -48,9 +53,6 @@
                             </tbody>
                         </table>
                         {{ $users->links() }}
-                        <div class="text-right">
-                            <a class="btn btn-primary" href="{{ route('user.create') }}">직원등록</a>
-                        </div>
                     </div>
                 </div>
             </div>

@@ -88,8 +88,8 @@
 <script src="https://cdn.jsdelivr.net/npm/fusioncharts@3.12.2/fusioncharts.js" charset="utf-8"></script>
 <script src="{{ asset('vendors/js/vendor.bundle.base.js') }}"></script>
 <script src="{{ asset('vendors/js/vendor.bundle.addons.js') }}"></script>
-<script src="{{ asset('js/template.js') }}"></script>
 <script src="{{ asset('js/app.js') }}"></script>
+<script src="{{ asset('js/template.js') }}"></script>
 @stack('script')
 </body>
 </html>

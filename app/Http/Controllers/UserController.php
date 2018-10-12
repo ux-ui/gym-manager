@@ -129,7 +129,7 @@ class UserController extends Controller
             'model' => $user,
         ]);
 
-        return view('user.create', compact('form', 'user'));
+        return view('user.edit', compact('form', 'user'));
     }
 
     /**
@@ -157,7 +157,7 @@ class UserController extends Controller
             $user->branches()->attach($id);
         }
 
-        return redirect()->route('user.create', [$user]);
+        return redirect()->route('user.index', [$user]);
     }
 
     /**

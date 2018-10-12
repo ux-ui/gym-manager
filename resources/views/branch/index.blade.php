@@ -8,7 +8,12 @@
                 <div class="card">
                     <div class="card-body">
                         <h4 class="card-title">{{ $title }}</h4>
-                        <table class="table table-bordered">
+                        <div class="menu_info bg_fcfcfc">
+                            <div class="btn_area text-right">
+                                <a href="{{ route('branch.create') }}" class="btn btn-primary">지점등록</a>
+                            </div>
+                        </div>
+                        <table class="table">
                             <colgroup>
                                 <col width="50">
                                 <col>
@@ -31,16 +36,13 @@
                                     <td class="text-center">{{ $branch->_created_at }}</td>
                                     <td class="text-center">
                                         <div class="btn-group-sm">
-                                            <a class="btn btn-sm btn-primary" href="{{ route('branch.edit', [$branch]) }}">수정</a>
+                                            <a class="btn btn-default btn-sm text-center" href="{{ route('branch.edit', [$branch]) }}">수정</a>
                                         </div>
                                     </td>
                                 </tr>
                             @endforeach
                             </tbody>
                         </table>
-                        <div class="text-right">
-                            <a href="{{ route('branch.create') }}" class="btn btn-primary">지점등록</a>
-                        </div>
                         {{ $branches->links() }}
                     </div>
                 </div>

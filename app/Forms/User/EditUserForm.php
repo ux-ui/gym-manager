@@ -41,6 +41,10 @@ class EditUserForm extends Form
             'label' => '관리지점',
             'expanded' => true,
             'multiple' => true,
+            'choice_options' => [
+                'wrapper' => ['class' => 'choice-wrapper'],
+                'label_attr' => ['class' => 'label-class'],
+            ],
             'choices' => Branch::all()->pluck('name', 'id')->toArray(),
             'rules' => 'array|exists:branches,id',
             'selected' => function ($data) {

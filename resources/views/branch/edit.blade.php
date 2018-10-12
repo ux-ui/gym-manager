@@ -10,9 +10,14 @@
                         <h4 class="card-title">{{ $title }}</h4>
                         {!! form_start($form) !!}
                         {!! form_rest($form) !!}
-                        <div class="text-right">
+                        <div class="btn_write text-center">
                             <button type="submit" class="btn btn-primary">수정</button>
-                            <a class="btn btn-danger" href="{{ route('branch.index') }}">취소</a>
+                            <a class="btn btn-default" href="{{ route('branch.index') }}">취소</a>
+                            <form method="POST" action="{{ route('branch.destroy', [$branch]) }}">
+                                @csrf
+                                @method('DELETE')
+                                <button class="btn btn-danger" type="submit">삭제</button>
+                            </form>
                         </div>
                         {!! form_end($form) !!}
                     </div>

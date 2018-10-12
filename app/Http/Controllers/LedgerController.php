@@ -102,11 +102,14 @@ class LedgerController extends Controller
         $form = $this->form(CreateLedgerForm::class);
         $form->redirectIfNotValid();
 
-        $ledger = $this->ledger->create(array_merge($form->getFieldValues(), [
+        $data = $form->getFieldValues();
+        $data['amount'] = preg_replace("/[^0-9]/", "",$data['amount']);
+
+        $ledger = $this->ledger->create(array_merge($data, [
             'user_id' => Auth::user()->id,
         ]));
 
-        return redirect()->route('ledger.show', [$ledger]);
+        return redirect()->route('ledger.index', [$ledger]);
     }
 
     /**
@@ -138,9 +141,12 @@ class LedgerController extends Controller
         $form = $this->form(EditLedgerForm::class);
         $form->redirectIfNotValid();
 
-        $this->ledger->update($form->getFieldValues(), $ledger->id);
+        $data = $form->getFieldValues();
+        $data['amount'] = preg_replace("/[^0-9]/", "",$data['amount']);
 
-        return redirect()->route('ledger.show', [$ledger]);
+        $this->ledger->update($data, $ledger->id);
+
+        return redirect()->route('ledger.edit', [$ledger]);
     }
 
     /**
